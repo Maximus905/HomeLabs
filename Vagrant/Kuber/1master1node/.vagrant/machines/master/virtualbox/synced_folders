@@ -1,0 +1,1 @@
+{"virtualbox":{"/home/vagrant/src":{"guestpath":"/home/vagrant/src","hostpath":"D:/Папа/VagrantPrj/Kuber/1master1node/src","disabled":false,"__vagrantfile":true},"/vagrant":{"guestpath":"/vagrant","hostpath":"D:/Папа/VagrantPrj/Kuber/1master1node","disabled":false,"__vagrantfile":true}}}

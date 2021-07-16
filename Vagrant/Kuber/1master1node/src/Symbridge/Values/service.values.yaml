@@ -1,0 +1,24 @@
+infraMgr:
+  git:
+    repository: git@git-ssh:/home/git/repo/symbridge-infra-schemas.git
+
+rabbitmq:
+  rabbitmqMemoryHighWatermark: 2048MB
+  persistentVolume:
+    enabled: true
+    storageClass: local-storage
+    size: 10Gi
+# rabbitmq:
+#   prometheus:
+#     operator:
+#       enabled: false
+  # persistentVolume:
+  #   enabled: true
+    # storageClass: local-storage
+    # size: 10Gi
+
+cassandra:
+  cluster:
+    datacenter: dc1
+  internal: false
+  host: 10.0.0.40

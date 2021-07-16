@@ -1,0 +1,42 @@
+# -*- mode: ruby -*-
+# vi: set ft=ruby :
+
+Vagrant.configure("2") do |config|
+
+  config.vm.define "kubemaster" do |kubemaster|
+    kubemaster.vm.hostname = "kubemaster"
+    kubemaster.vm.box = "ubuntu/focal64"
+    kubemaster.vm.box_check_update = false
+    kubemaster.vm.network "public_network", ip: "192.168.1.60"
+    kubemaster.vm.provision "shell", path: "provision.sh"
+    kubemaster.vm.provider "virtualbox" do |vb|
+      vb.memory = "2048"
+      vb.cpus = 2
+    end
+	kubemaster.vm.provision "shell" do |s|
+    	ssh_pub_key = File.readlines("./laptop_asus.pub").first.strip
+    	s.inline = <<-SHELL
+    	  echo #{ssh_pub_key} >> /home/vagrant/.ssh/authorized_keys
+    	SHELL
+  	end
+  end
+
+  (1..2).each do |i|
+    config.vm.define "worker#{i}" do |worker|
+      worker.vm.hostname = "worker#{i}"
+      worker.vm.box = "ubuntu/focal64"
+      worker.vm.network "public_network", ip: "192.168.1.6#{i}"
+      worker.vm.provision "shell", path: "provision.sh"
+      worker.vm.provision "shell" do |s|
+    	ssh_pub_key = File.readlines("./laptop_asus.pub").first.strip
+    	s.inline = <<-SHELL
+    	  echo #{ssh_pub_key} >> /home/vagrant/.ssh/authorized_keys
+    	SHELL
+  	  end
+      worker.vm.provider "virtualbox" do |vb|
+        vb.memory = "2048"
+        vb.cpus = 2
+      end
+    end
+  end
+end

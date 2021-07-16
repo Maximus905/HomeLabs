@@ -1,0 +1,26 @@
+# -*- mode: ruby -*-
+# vi: set ft=ruby :
+
+Vagrant.configure("2") do |config|
+
+  config.vm.define "node-1" do |node1|
+    node1.vm.hostname = "node-1"
+    node1.vm.box = "ubuntu/focal64"
+    node1.vm.box_check_update = false
+    node1.vm.network "public_network", ip: "192.168.1.60"
+    node1.vm.synced_folder "src/", "/home/vagrant/src"
+    node1.vm.provision "shell", path: "provisionCommon.sh"
+  end
+
+  config.vm.define "node-2" do |node2|
+    node2.vm.hostname = "node-2"
+    node2.vm.box = "ubuntu/focal64"
+    node2.vm.network "public_network", ip: "192.168.1.61"
+    node2.vm.synced_folder "src/", "/home/vagrant/src"
+    node2.vm.provision "shell", path: "provisionCommon.sh"
+    node2.vm.provider "virtualbox" do |vb|
+      vb.memory = "2048"
+      vb.cpus = 1
+    end
+  end
+end
